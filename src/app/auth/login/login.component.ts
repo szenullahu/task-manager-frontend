@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AuthService} from '../auth.service';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
+import {ToastService} from '../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -15,7 +17,13 @@ import {Router} from '@angular/router';
 export class LoginComponent {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private toastService: ToastService,
+    private router: Router
+  )
+  {
     this.form = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -23,16 +31,19 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.toastService.show('Please fix the validation errors.', 'warning');
+      return;
+    }
 
     this.auth.login(this.form.value).subscribe({
-      next: (res) => {
-        this.auth.saveToken(res.token);
-        this.router.navigate(['/me']);
+      next: (response) => {
+        this.auth.saveToken(response.token);
+        this.toastService.show('Signed in successfully', 'success');
+        void this.router.navigate(['/tasks']);
       },
-      error: (err) => {
-        console.error('Login failed', err);
-        alert('Invalid credentials');
+      error: () => {
+        this.toastService.show('Invalid username or password.', 'danger');
       },
     });
   }

@@ -1,9 +1,54 @@
-<h2>Login</h2>
+<div class="container mt-5">
+  <div class="card shadow-sm border-0 rounded-3 login-card mx-auto" style="max-width: 420px;">
+    <div class="card-body p-4">
+      <h4 class="mb-4 text-center fw-semibold">Login</h4>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <input type="text" formControlName="username" placeholder="Username" />
-  <br />
-  <input type="password" formControlName="password" placeholder="Password" />
-  <br />
-  <button type="submit">Login</button>
-</form>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="row g-3">
+
+        <!-- Username -->
+        <div class="col-12">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            id="username"
+            class="form-control"
+            formControlName="username"
+            placeholder="Enter username"
+            [class.is-invalid]="form.get('username')?.invalid && form.get('username')?.touched"
+          />
+          @if (form.get('username')?.errors?.['required']) {
+            <div class="invalid-feedback">Username is required.</div>
+          }
+        </div>
+
+        <!-- Password -->
+        <div class="col-12">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            formControlName="password"
+            placeholder="Enter password"
+            [class.is-invalid]="form.get('password')?.invalid && form.get('password')?.touched"
+          />
+          @if (form.get('password')?.errors?.['required']) {
+            <div class="invalid-feedback">Password is required.</div>
+          }
+        </div>
+
+        <!-- Actions -->
+        <div class="col-12 d-flex flex-column align-items-center gap-2 mt-3">
+          <button class="btn btn-primary w-100" type="submit" [disabled]="form.invalid">
+            Sign In
+          </button>
+          <p class="m-0 text-secondary text-center">
+            Don’t have an account?
+            <a routerLink="/register" class="link-primary text-decoration-none">Sign Up</a>
+          </p>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
