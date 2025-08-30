@@ -9,6 +9,7 @@ import {TaskUpdateDTO} from '../../model/task/task-update-dto.model';
 import {TaskCreateDTO} from '../../model/task/task-create-dto.model';
 import {NgbDateParserFormatter, NgbDatepickerModule, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {DateFormatter} from '../../shared/formatters/date-formatter';
+import {ToastService} from '../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-task-form',
@@ -29,7 +30,8 @@ export class TaskFormComponent implements OnInit {
     private route: ActivatedRoute,
     private taskService: TaskService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastService: ToastService
   ) {
     const today = new Date();
     this.minDate = {
@@ -69,7 +71,9 @@ export class TaskFormComponent implements OnInit {
             dueDate: ngbDate
           });
         },
-        error: (err) => console.error('Task not found', err)
+        error: (err) => {
+          this.toastService.show(err.error?.error ?? 'Task not found', 'danger');
+        }
       });
     }
   }
@@ -88,7 +92,13 @@ export class TaskFormComponent implements OnInit {
         dueDate: formattedDate
       };
       this.taskService.updateTask(this.taskId, taskUpdateDTO).subscribe({
-        next: () => this.router.navigate(['/tasks'])
+        next: () => {
+          this.toastService.show('Task created successfully', 'success');
+          void this.router.navigate(['/tasks'])
+        },
+        error: (err) => {
+          this.toastService.show(err.error?.error ?? 'Could not create Task', 'danger');
+        }
       });
     } else {
       const taskCreateDTO: TaskCreateDTO = {
@@ -96,7 +106,13 @@ export class TaskFormComponent implements OnInit {
         dueDate: formattedDate
       };
       this.taskService.createTask(taskCreateDTO).subscribe({
-        next: () => this.router.navigate(['/tasks'])
+        next: () => {
+          this.toastService.show('Task updated', 'success');
+          void this.router.navigate(['/tasks'])
+        },
+        error: (err) => {
+          this.toastService.show(err.error?.error ?? 'Could not update Task', 'danger');
+        }
       });
     }
   }
