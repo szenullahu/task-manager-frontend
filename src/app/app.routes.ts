@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
 import {preventLoggedInAccessGuard} from './auth/guard/prevent-logged-in-access.guard';
-import {taskRoutes} from './tasks/task.routes';
+import {taskRoutes} from './task/task.routes';
 import {userRoutes} from './user/user.routes';
 
 export const routes: Routes = [

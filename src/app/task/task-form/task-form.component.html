@@ -1,0 +1,101 @@
+<div class="container mt-5">
+  <div class="add-edit-card">
+    <h4 class="mb-3">{{ taskId ? 'Edit Task' : 'Add Task' }}</h4>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="row g-3">
+      <!-- Title -->
+      <div class="col-12">
+        <label class="form-label" for="title">Title</label>
+        <input
+          id="title"
+          class="form-control"
+          formControlName="title"
+          (blur)="capitalizeFirst('title')"
+          [class.is-invalid]="form.get('title')?.invalid && form.get('title')?.touched"
+          maxlength="120"
+        />
+        @if (form.get('title')?.errors?.['required']) {
+          <div class="invalid-feedback">Title is required.</div>
+        }
+        @if (form.get('title')?.errors?.['maxlength']) {
+          <div class="invalid-feedback">Title must be at most 120 characters.</div>
+        }
+      </div>
+      <!-- Description -->
+      <div class="col-12">
+        <label class="form-label" for="description">Description</label>
+        <textarea
+          id="description"
+          class="form-control"
+          rows="3"
+          formControlName="description"
+        ></textarea>
+      </div>
+      <!-- Status -->
+      <div class="col-md-6">
+        <label class="form-label" for="status">Status</label>
+        <select
+          id="status"
+          class="form-select"
+          formControlName="status"
+          [class.is-invalid]="form.get('status')?.invalid && form.get('status')?.touched"
+        >
+          <option value="PENDING">Pending</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="COMPLETED">Completed</option>
+          <option value="CANCELLED">Cancelled</option>
+        </select>
+        @if (form.get('status')?.errors?.['required']) {
+          <div class="invalid-feedback">Status is required.</div>
+        }
+      </div>
+      <!-- Priority -->
+      <div class="col-md-6">
+        <label class="form-label" for="priority">Priority</label>
+        <select
+          id="priority"
+          class="form-select"
+          formControlName="priority"
+          [class.is-invalid]="form.get('priority')?.invalid && form.get('priority')?.touched"
+        >
+          <option value="LOW">Low</option>
+          <option value="MEDIUM">Medium</option>
+          <option value="HIGH">High</option>
+        </select>
+        @if (form.get('priority')?.errors?.['required']) {
+          <div class="invalid-feedback">Priority is required.</div>
+        }
+      </div>
+      <!-- Due Date -->
+      <div class="col-12">
+        <label class="form-label" for="dueDate">Due Date</label>
+        <div class="input-group">
+          <input
+            id="dueDate"
+            name="dueDate"
+            class="form-control"
+            placeholder="dd-mm-yy"
+            ngbDatepicker
+            formControlName="dueDate"
+            [minDate]="minDate"
+            readonly
+            [class.is-invalid]="form.get('dueDate')?.invalid && form.get('dueDate')?.touched"
+            #d="ngbDatepicker"
+          />
+          <button class="btn btn-outline-secondary" type="button" (click)="d.toggle()">
+            <i class="bi bi-calendar-date"></i>
+          </button>
+          @if (form.get('dueDate')?.invalid && form.get('dueDate')?.touched) {
+            <div class="invalid-feedback d-block">Please select a valid due date.</div>
+          }
+        </div>
+      </div>
+      <!-- Actions -->
+      <div class="col-12 d-flex justify-content-end gap-2">
+        <button class="btn btn-outline-primary" type="submit" [disabled]="form.invalid">
+          {{ taskId ? 'Save changes' : 'Create task' }}
+        </button>
+        <a class="btn btn-outline-secondary" routerLink="/tasks">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>

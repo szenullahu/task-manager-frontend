@@ -1,0 +1,30 @@
+.kv-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .35rem 0;
+  border-bottom: 1px solid rgba(0,0,0,.05);
+}
+.kv-row:last-of-type { border-bottom: 0; }
+
+.kv-label {
+  color: #6c757d;           /* Bootstrap secondary */
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  font-weight: 600;
+}
+
+.kv-value {
+  text-align: right;
+  max-width: 65%;
+}
+
+/* optional: clamp long descriptions to 3 lines */
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
