@@ -1,4 +1,4 @@
-export interface UserPasswordUpdateDtoModelDTO {
+export interface UserPasswordUpdateDTO {
   oldPassword: string;
   newPassword: string;
 }
