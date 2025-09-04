@@ -4,12 +4,13 @@ import {TaskDto} from '../model/task/task-dto.model';
 import {HttpClient} from '@angular/common/http';
 import {TaskCreateDTO} from '../model/task/task-create-dto.model';
 import {TaskUpdateDTO} from '../model/task/task-update-dto.model';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl = 'http://localhost:8080/api/tasks';
+  private apiUrl = `${environment.apiUrl}/tasks`;
 
   constructor(private http: HttpClient) {
   }

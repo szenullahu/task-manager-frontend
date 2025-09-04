@@ -40,8 +40,8 @@ export class MeComponent implements OnInit {
 
   async deleteUser() {
     const confirmed = await this.confirmService.confirm({
-      title: 'Delete Task?',
-      message: 'Are you sure you want to delete this task?',
+      title: 'Delete Account?',
+      message: 'Are you sure you want to delete your Account?',
       confirmText: 'Delete',
       cancelText: 'Cancel'
     });

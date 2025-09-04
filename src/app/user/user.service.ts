@@ -4,12 +4,14 @@ import {Observable} from 'rxjs';
 import {UserDTO} from '../model/user/user-dto.model';
 import {UserUpdateDTO} from '../model/user/user-update-dto.model';
 import {UserPasswordUpdateDTO} from '../model/user/user-password-update-dto.model';
+import {environment} from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8080/api/user';
+  private apiUrl = `${environment.apiUrl}/user`;
 
   constructor(private http: HttpClient) {
   }
